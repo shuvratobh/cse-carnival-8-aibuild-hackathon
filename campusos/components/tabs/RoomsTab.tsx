@@ -15,8 +15,8 @@ export default function RoomsTab({ data }: { data: any[] }) {
     { key: 'capacity', label: 'Capacity' },
     { key: 'type', label: 'Type' },
     { key: 'status', label: 'Status' },
-    { 
-      key: 'equipment', 
+    {
+      key: 'equipment',
       label: 'Equipment',
       render: (val: string) => {
         try {
@@ -32,7 +32,7 @@ export default function RoomsTab({ data }: { data: any[] }) {
               </div>
             );
           }
-        } catch(e) {}
+        } catch (e) { }
         return val;
       }
     },

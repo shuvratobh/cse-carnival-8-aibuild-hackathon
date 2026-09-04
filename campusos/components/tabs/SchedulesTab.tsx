@@ -13,8 +13,10 @@ export default function SchedulesTab({ data }: { data: any[] }) {
     { key: 'course', label: 'Course' },
     { key: 'title', label: 'Title' },
     { key: 'day', label: 'Day' },
-    { key: 'start_time', label: 'Time' },
+    { key: 'start_time', label: 'Start' },
+    { key: 'end_time', label: 'End' },
     { key: 'room', label: 'Room' },
+    { key: 'instructor', label: 'Instructor' },
   ];
 
   const handleOpenAdd = () => {
@@ -69,7 +71,7 @@ export default function SchedulesTab({ data }: { data: any[] }) {
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingData ? 'Edit Course' : 'Add New Course'}
+        title={editingData ? 'Edit Schedule' : 'Add New Schedule'}
       >
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4">
@@ -78,8 +80,8 @@ export default function SchedulesTab({ data }: { data: any[] }) {
               <input name="course" required defaultValue={editingData?.course} className="glass-input" placeholder="e.g. CSE 4113" />
             </label>
             <label className="flex flex-col gap-1 text-sm text-gray-300">
-              Course Title
-              <input name="title" required defaultValue={editingData?.title} className="glass-input" placeholder="e.g. Cyber Security" />
+              Title
+              <input name="title" required defaultValue={editingData?.title} className="glass-input" placeholder="e.g. Pattern Recognition" />
             </label>
             <label className="flex flex-col gap-1 text-sm text-gray-300">
               Day
@@ -92,24 +94,24 @@ export default function SchedulesTab({ data }: { data: any[] }) {
               </select>
             </label>
             <label className="flex flex-col gap-1 text-sm text-gray-300">
+              Section
+              <input name="section" required defaultValue={editingData?.section || 'A'} className="glass-input" placeholder="e.g. A" />
+            </label>
+            <label className="flex flex-col gap-1 text-sm text-gray-300">
+              Start Time
+              <input name="start_time" required defaultValue={editingData?.start_time} className="glass-input" placeholder="e.g. 08:00" />
+            </label>
+            <label className="flex flex-col gap-1 text-sm text-gray-300">
+              End Time
+              <input name="end_time" required defaultValue={editingData?.end_time} className="glass-input" placeholder="e.g. 09:30" />
+            </label>
+            <label className="flex flex-col gap-1 text-sm text-gray-300">
               Room
               <input name="room" required defaultValue={editingData?.room} className="glass-input" placeholder="e.g. 7A03" />
             </label>
             <label className="flex flex-col gap-1 text-sm text-gray-300">
-              Start Time
-              <input name="start_time" type="time" required defaultValue={editingData?.start_time} className="glass-input" />
-            </label>
-            <label className="flex flex-col gap-1 text-sm text-gray-300">
-              End Time
-              <input name="end_time" type="time" required defaultValue={editingData?.end_time} className="glass-input" />
-            </label>
-            <label className="flex flex-col gap-1 text-sm text-gray-300">
               Instructor
-              <input name="instructor" required defaultValue={editingData?.instructor} className="glass-input" placeholder="Name or TBA" />
-            </label>
-            <label className="flex flex-col gap-1 text-sm text-gray-300">
-              Section
-              <input name="section" required defaultValue={editingData?.section} className="glass-input" placeholder="e.g. A" />
+              <input name="instructor" required defaultValue={editingData?.instructor} className="glass-input" placeholder="e.g. Dr. Ahmed" />
             </label>
           </div>
           <div className="flex justify-end gap-2 mt-4">
@@ -117,7 +119,7 @@ export default function SchedulesTab({ data }: { data: any[] }) {
               Cancel
             </button>
             <button type="submit" className="premium-btn">
-              {editingData ? 'Save Changes' : 'Add Course'}
+              {editingData ? 'Save Changes' : 'Add Schedule'}
             </button>
           </div>
         </form>

@@ -1,36 +1,117 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CampusOS — AI-Powered Campus Dashboard
 
-## Getting Started
+An intelligent university platform powered by an AI agent that understands and acts on real-time campus data. Built with **Next.js 16**, **Prisma (SQLite)**, and **Google Gemini AI**.
 
-First, run the development server:
+---
+
+## Features
+
+- **5 Data Sections**: Schedules, Rooms, Events, Announcements, Assignments — all visible in a unified dashboard
+- **Full CRUD**: Add, edit, and delete for every section. Changes persist in a real database (SQLite via Prisma)
+- **AI Chat Agent**: An integrated Gemini-powered assistant that queries live campus data
+- **Modern UI**: Glassmorphism, smooth animations (Framer Motion), dark mode, responsive layout
+
+---
+
+## Local Setup
+
+### Prerequisites
+
+- **Node.js** ≥ 18
+- **npm**
+- A **Google Gemini API key** ([get one here](https://aistudio.google.com/app/apikey))
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/shuvratobh/cse-carnival-8-aibuild-hackathon.git
+cd cse-carnival-8-aibuild-hackathon/campusos
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Set up environment variables
+
+```bash
+cp ../.env.example .env.local
+```
+
+Then edit `.env.local` and add your Gemini API key:
+
+```
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+### 4. Set up the database
+
+```bash
+npx prisma generate
+npx prisma db push
+```
+
+To seed the database with the initial campus data:
+
+```bash
+npx tsx prisma/seed.ts
+```
+
+### 5. Run the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tech Stack
 
-## Learn More
+| Layer        | Technology           |
+|-------------|---------------------|
+| Framework   | Next.js 16 (App Router, Turbopack) |
+| Language    | TypeScript           |
+| Database    | SQLite via Prisma ORM |
+| AI          | Google Gemini 3.6 Flash (via AI SDK) |
+| Styling     | Tailwind CSS 4       |
+| Animations  | Framer Motion        |
+| Icons       | Lucide React         |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+campusos/
+├── app/
+│   ├── page.tsx           ← Main dashboard page (Server Component)
+│   ├── layout.tsx         ← Root layout
+│   ├── globals.css        ← Global styles & design tokens
+│   └── api/chat/route.ts  ← AI chat API endpoint
+├── components/
+│   ├── DashboardClient.tsx ← Dashboard tabs + metrics (Client Component)
+│   ├── ChatAgent.tsx       ← AI chat interface
+│   ├── DataTable.tsx       ← Reusable data table with search
+│   ├── Modal.tsx           ← Reusable modal dialog
+│   └── tabs/               ← Tab components (Schedules, Rooms, Events, etc.)
+├── actions/
+│   └── index.ts           ← Server Actions for all CRUD operations
+├── prisma/
+│   ├── schema.prisma      ← Database schema
+│   └── seed.ts            ← Seed script to load initial data
+└── .env.local             ← API keys (not committed)
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Submission Checklist
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [x] Repo is public
+- [x] All five data sections are visible in the dashboard
+- [x] Add, edit, and delete work for all five systems and changes persist after reload
+- [x] README has working local setup steps
+- [x] No API keys committed to the repo (uses `.env.example`)
