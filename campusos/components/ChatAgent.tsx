@@ -110,7 +110,7 @@ export default function ChatAgent() {
         if (!input.trim() || isLoading) return;
         const text = input;
         setInput('');
-        sendMessage({ content: text });
+        sendMessage({ text });
       }} className="p-4 bg-black/40 border-t border-[var(--color-card-border)] relative z-10">
         <div className="relative flex items-center">
           <input

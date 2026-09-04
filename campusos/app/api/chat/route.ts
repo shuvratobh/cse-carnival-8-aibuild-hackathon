@@ -17,11 +17,12 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
-  const modelMessages = await convertToModelMessages(messages);
+  const body = await req.json();
+  const rawMessages = Array.isArray(body?.messages) ? body.messages : [];
+  const modelMessages = await convertToModelMessages(rawMessages);
 
   const result = streamText({
-    model: google('gemini-flash-latest'),
+    model: google('gemini-3.6-flash'),
     messages: modelMessages,
     system: `You are the CampusOS AI Agent, an intelligent assistant for university students.
 You have access to live database tools to lookup schedules, rooms, events, announcements, and assignments.
