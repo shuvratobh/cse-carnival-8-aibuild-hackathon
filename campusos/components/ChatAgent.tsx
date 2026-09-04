@@ -5,13 +5,17 @@ import { useChat } from '@ai-sdk/react';
 import { Send, Bot, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 export default function ChatAgent() {
-  const { messages, sendMessage, status, error } = useChat();
+  const { messages, sendMessage, status, error } = useChat({
+    maxSteps: 5,
+  });
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
   const isLoading = status === 'submitted' || status === 'streaming';
+  console.log('Chat messages:', messages);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -48,13 +52,23 @@ export default function ChatAgent() {
                   : 'bg-white/10 text-gray-200 border border-white/10 rounded-tl-none shadow-lg'
               }`}>
                 {(() => {
-                  if (typeof m.content === 'string' && m.content) return m.content;
-                  if (Array.isArray(m.parts)) {
-                    const textParts = m.parts
+                  let textToRender = '';
+                  if (typeof m.content === 'string' && m.content) textToRender = m.content;
+                  else if (Array.isArray(m.parts)) {
+                    textToRender = m.parts
                       .filter((p: any) => p.type === 'text')
                       .map((p: any) => p.text)
                       .join('');
-                    if (textParts) return textParts;
+                  }
+                  
+                  if (textToRender) {
+                    return (
+                      <div className={`prose prose-sm max-w-none ${m.role === 'user' ? 'prose-invert text-white' : 'prose-invert text-gray-200'} prose-p:leading-relaxed prose-pre:bg-black/50 prose-pre:border prose-pre:border-white/10 prose-th:text-gray-300 prose-td:text-gray-300`}>
+                        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                          {textToRender}
+                        </ReactMarkdown>
+                      </div>
+                    );
                   }
                   return m.role === 'assistant' ? "Calling a tool..." : "";
                 })()}
@@ -96,7 +110,7 @@ export default function ChatAgent() {
         if (!input.trim() || isLoading) return;
         const text = input;
         setInput('');
-        sendMessage({ text });
+        sendMessage({ content: text });
       }} className="p-4 bg-black/40 border-t border-[var(--color-card-border)] relative z-10">
         <div className="relative flex items-center">
           <input
