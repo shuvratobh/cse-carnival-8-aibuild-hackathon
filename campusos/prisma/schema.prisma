@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Schedule {
+  id         String @id
+  course     String
+  title      String
+  day        String
+  start_time String
+  end_time   String
+  room       String
+  instructor String
+  section    String
+}
+
+model Room {
+  id          String    @id
+  room_number String    @unique
+  type        String
+  capacity    Int
+  equipment   String    // Stored as JSON string since SQLite doesn't support arrays
+  floor       Int
+  status      String
+  bookings    Booking[]
+}
+
+model Booking {
+  booking_id String @id
+  room_id    String
+  room       Room   @relation(fields: [room_id], references: [id], onDelete: Cascade)
+  booked_by  String
+  date       String
+  start_time String
+  end_time   String
+  purpose    String
+}
+
+model Event {
+  id            String         @id
+  name          String
+  description   String
+  date          String
+  start_time    String
+  end_time      String
+  end_date      String
+  venue         String
+  organizer     String
+  capacity      Int
+  registered    Int
+  registrations Registration[]
+  status        String
+}
+
+model Registration {
+  student_id String // Assuming 1 student per event. If multiple events, we need a composite key.
+  event_id   String
+  event      Event  @relation(fields: [event_id], references: [id], onDelete: Cascade)
+  name       String
+
+  @@id([student_id, event_id])
+}
+
+model Announcement {
+  id        String @id
+  title     String
+  body      String
+  date      String
+  priority  String
+  posted_by String
+  expires   String
+}
+
+model Assignment {
+  id                  String @id
+  course              String
+  course_title        String
+  title               String
+  description         String
+  assigned_date       String
+  deadline            String
+  submission_platform String
+  status              String
+  marks               Int
+}
